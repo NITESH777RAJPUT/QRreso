@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, "../customer-dist")));
 app.use("/admin", express.static(path.join(__dirname, "../restaurant-dist")));
 
 // ADMIN fallback
-app.get("/admin/*", (req, res) => {
+app.use("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "../restaurant-dist", "index.html"));
 });
 
