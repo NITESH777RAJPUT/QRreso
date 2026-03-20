@@ -25,7 +25,7 @@ const io = new Server(server, {
 
 initSocket(io);
 
-// ================= FRONTEND SERVE =================
+// ================= FRONTEND =================
 
 // CUSTOMER
 app.use(express.static(path.join(__dirname, "../customer-dist")));
