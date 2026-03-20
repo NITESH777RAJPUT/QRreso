@@ -27,22 +27,21 @@ initSocket(io);
 
 // ================= FRONTEND =================
 
-// CUSTOMER
+// CUSTOMER static
 app.use(express.static(path.join(__dirname, "../customer-dist")));
 
-// ADMIN
+// ADMIN static
 app.use("/admin", express.static(path.join(__dirname, "../restaurant-dist")));
 
-// ADMIN fallback
+// ✅ ADMIN fallback
 app.use("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "../restaurant-dist", "index.html"));
 });
 
-// CUSTOMER fallback
-app.get("*", (req, res) => {
+// ✅ CUSTOMER fallback (NO "*")
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../customer-dist", "index.html"));
 });
-
 // ================= START =================
 const PORT = process.env.PORT || 5000;
 
