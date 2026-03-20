@@ -10,41 +10,35 @@ import connectDB from "./config/db.js";
 import { Server } from "socket.io";
 import { initSocket } from "./sockets/order.socket.js";
 
-// ================= PATH FIX =================
+// fix __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ================= DB =================
 connectDB();
 
-// ================= SERVER =================
 const server = http.createServer(app);
 
 // ================= SOCKET =================
 const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
+  cors: { origin: "*" },
 });
 
 initSocket(io);
 
 // ================= FRONTEND SERVE =================
 
-// 👉 CUSTOMER (root)
+// CUSTOMER
 app.use(express.static(path.join(__dirname, "../customer-dist")));
 
-// 👉 ADMIN (/admin)
+// ADMIN
 app.use("/admin", express.static(path.join(__dirname, "../restaurant-dist")));
 
-// ================= FALLBACK ROUTES =================
-
-// 👉 ADMIN fallback (React routing ONLY)
+// ADMIN fallback
 app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../restaurant-dist", "index.html"));
 });
 
-// 👉 CUSTOMER fallback (React routing ONLY)
+// CUSTOMER fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../customer-dist", "index.html"));
 });
