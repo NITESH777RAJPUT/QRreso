@@ -10,12 +10,14 @@ import connectDB from "./config/db.js";
 import { Server } from "socket.io";
 import { initSocket } from "./sockets/order.socket.js";
 
-// fix __dirname (ESM)
+// ================= PATH FIX =================
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// ================= DB =================
 connectDB();
 
+// ================= SERVER =================
 const server = http.createServer(app);
 
 // ================= SOCKET =================
@@ -35,19 +37,21 @@ app.use(express.static(path.join(__dirname, "../customer-dist")));
 // 👉 ADMIN (/admin)
 app.use("/admin", express.static(path.join(__dirname, "../restaurant-dist")));
 
-// 👉 ADMIN fallback (React routing)
-app.use("/admin", (req, res) => {
+// ================= FALLBACK ROUTES =================
+
+// 👉 ADMIN fallback (React routing ONLY)
+app.get("/admin/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../restaurant-dist", "index.html"));
 });
 
-// 👉 CUSTOMER fallback (React routing)
-app.use((req, res) => {
+// 👉 CUSTOMER fallback (React routing ONLY)
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../customer-dist", "index.html"));
 });
 
 // ================= START =================
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () =>
-  console.log(`🚀 Server running on port ${PORT}`)
-);
+server.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
