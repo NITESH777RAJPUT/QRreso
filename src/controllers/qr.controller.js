@@ -9,7 +9,7 @@ export const generateQR = async (req, res) => {
       return res.status(400).json({ message: "Missing params" });
     }
 
-    const url = `http://localhost:5173/r/${restaurantId}/${tableId}`;
+    const url = `https://qrreso.onrender.com:/r/${restaurantId}/${tableId}`;
 
     const qrImage = await QRCode.toDataURL(url);
 
